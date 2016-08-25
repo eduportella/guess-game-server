@@ -4,6 +4,7 @@
 # Logs
 logs
 *.log
+*.log.*
 
 
 # Runtime data
@@ -33,3 +34,5 @@ node_modules
 
 # Runtime configuration for swagger app
 config/runtime.yaml
+
+
