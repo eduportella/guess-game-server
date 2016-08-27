@@ -6,6 +6,6 @@ export default function reducer(state = INITIAL_STATE, action) {
     return setEntries(state, action.entries);
   case 'NEXT':
     return next(state);
-  }
+	}
   return state;
 }
