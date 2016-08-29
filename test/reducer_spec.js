@@ -2,7 +2,7 @@ import {Map, fromJS} from 'immutable';
 import {expect} from 'chai';
 
 import reducer from '../src/reducer';
-import {setEntries, next} from '../src/actions';
+import {setEntries, next, reset} from '../src/actions';
 
 describe('reducer', () => {
 
@@ -42,7 +42,22 @@ describe('reducer', () => {
       entries: [{picture: "myPic", option1: "Gimli", option2: "Frodo", name: "Gimli"}]
     }));
   });
-  it('can be used with reduce', () => {
+  it('RESET the game', () => {
+    const initialState = fromJS({
+      guess:{picture: "myPic", option1: "Gimli", option2: "Frodo", name: "Gimli"},
+      entries: [
+        {picture: "myPic", option1: "Legolas", option2: "Aragorn", name: "Aragorn"}
+      ]  
+    });
+    const action = reset();
+    const nextState = reducer(initialState, action);
+    const entries = require('../characters.json');
+    expect(nextState).to.equal(fromJS({
+      guess: fromJS(entries).first(),
+      entries: fromJS(entries).skip(1)
+    }));
+  });
+  /*it('can be used with reduce', () => {
     const entries = [
       {picture: "myPic", option1: "Legolas", option2: "Aragorn", name: "Aragorn"},
       {picture: "myPic", option1: "Gimli", option2: "Frodo", name: "Gimli"}
@@ -51,13 +66,16 @@ describe('reducer', () => {
       setEntries(entries),
       next(),
       next(),
+      next(),
+      reset(),
+      next(),
       next()
     ];
     const finalState = actions.reduce(reducer, Map());
 
     expect(finalState).to.equal(fromJS({
-      finish: 'you win!'
+      winner: 'you win!'
     }));
-  });
+  });*/
 
 });

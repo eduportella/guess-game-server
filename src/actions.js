@@ -10,3 +10,9 @@ export function next() {
     type: 'NEXT'
   }
 }
+
+export function reset() {
+	return {
+		type: 'RESET'
+	}
+}

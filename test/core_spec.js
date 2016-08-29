@@ -1,7 +1,9 @@
-import {List, Map} from 'immutable';
+import {List, Map, fromJS} from 'immutable';
 import {expect} from 'chai';
 
-import {setEntries, next} from '../src/core';
+import {setEntries, next, reset, add} from '../src/core';
+
+import fs from 'fs';
 
 describe('application logic', () => {
 
@@ -67,6 +69,48 @@ describe('application logic', () => {
       }));
     });
 
+
+  });
+  describe('reset', () => {
+    it('Should reset the entries when there is a winner', () => {
+      const state = Map({
+        winner: 'you win!'
+      });
+      const entries = require('../characters.json');
+      const nextState = reset(state);
+      expect(nextState).to.equal(Map({
+        entries: fromJS(entries)
+      }));
+    });
+
+    it('Should reset the entries during the game', () => {
+      const state = Map({
+        guess: Map({picture: "myPic", option1: "Legolas", option2: "Aragorn", name: "Aragorn"}),
+        entries: List()
+      });
+      const entries = require('../characters.json');
+      const nextState = reset(state);
+      expect(nextState).to.equal(Map({
+        entries: fromJS(entries)
+      }));
+    });
+
+
+
+  });
+  describe('ADD', () => {
+    it('should add a new character',() => {
+      const state = Map({
+        guess: Map({picture: "myPic", option1: "Legolas", option2: "Aragorn", name: "Aragorn"}),
+        entries: List()
+      });
+      const character = {picture: "myPic", option1: "Legolas", option2: "Aragorn", name: "Aragorn"};
+      const nextState = add(state, character);
+      expect(nextState).to.equal(Map({
+        guess: Map({picture: "myPic", option1: "Legolas", option2: "Aragorn", name: "Aragorn"}),
+        entries: List()
+      }));
+    });
   });
 
 });
